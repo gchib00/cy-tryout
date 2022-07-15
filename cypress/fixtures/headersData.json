@@ -1,0 +1,5 @@
+{
+  "clientId": "84178c6f-15d8-4f68-9f04-b349fc7ec48a",
+  "clientSecret": "31a2055a5a47764c3ad25a54b3c1311f85d341f9db971b1054716f300b49b51f",
+  "redirectUrl": "https://yourapp.com/callback"
+}
