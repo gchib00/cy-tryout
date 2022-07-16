@@ -1,0 +1,43 @@
+/// <reference types='cypress' />
+
+const demoUrl = Cypress.config('baseUrl').replace('www.', 'demo.')
+const companyName = Cypress.config('baseUrl').split('.')[1]
+
+it('Testing payment', () => {
+  cy.visit('/')
+  cy.get('[data-testid="CookieBanner-accept-all"]')
+    .click()
+  cy.contains('Demo')
+    .click()
+    .visit(demoUrl)
+  cy.contains('Redirect payment flow')
+    .click()
+  cy.get('#amount')
+    .type(Cypress.env('testPaymentAmount'))
+  cy.get('#email')
+    .type(Cypress.env('testEmail'))
+  cy.get('label[for="terms"]')
+    .should('contain.text', 'I have read and agree with')
+    .find('span') // checkbox
+      .should('have.css', 'border', '1px solid rgb(229, 229, 229)')
+      .should('have.css', 'background-color', 'rgb(255, 255, 255)')
+      .should('have.css', 'position', 'absolute')
+  cy.get('label[for="SWEDBANK_LT"]')
+    .click()
+  cy.get('button[type=submit]')
+    .should('contain.text', "Pay")
+    .click()
+  cy.contains('You have to agree to the terms and conditions and privacy policy')
+    .should('have.css', 'color', 'rgb(255, 59, 48)')
+  cy.get('label[for="terms"]')
+    .find('span')
+      .click()
+  cy.get('button[type=submit]')
+    .should('contain.text', "Pay")
+    .click()
+  // Bonus step to assert the presence of previously accepted cookies
+  cy.visit('/')
+  cy.getCookie(`${companyName}-user-has-interacted-with-cookies`)
+    .should('exist')
+    .should('have.property', 'value', 'true')
+  })
