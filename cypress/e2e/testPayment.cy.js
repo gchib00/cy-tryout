@@ -35,7 +35,7 @@ it('Testing payment', () => {
   cy.get('button[type=submit]')
     .should('contain.text', "Pay")
     .click()
-  // Bonus step to assert the presence of previously accepted cookies
+  // Assert the presence of previously accepted cookies:
   cy.visit('/')
   cy.getCookie(`${companyName}-user-has-interacted-with-cookies`)
     .should('exist')
